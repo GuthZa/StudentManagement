@@ -1,42 +1,38 @@
 package com.guthza.studentmanagement.users;
 
 import com.guthza.studentmanagement.courses.Course;
+import jakarta.persistence.Entity;
+import jakarta.persistence.GeneratedValue;
+import jakarta.persistence.Id;
 import lombok.Getter;
 import lombok.Setter;
 
-
-import java.util.ArrayList;
-import java.util.List;
 import java.util.Objects;
-import java.util.concurrent.atomic.AtomicInteger;
 
 @Getter
 @Setter
+@Entity
 public class Student {
 
-    private static final AtomicInteger _ID = new AtomicInteger(0);
-
-    private final int id;
+    private @Id @GeneratedValue Long id;
     private String firstName;
     private String lastName;
-    @Getter
-    private List<Course> courseList = new ArrayList<>();
 
     public Student(String firstName, String lastName) {
-        this.id = _ID.incrementAndGet();
         this.firstName = firstName;
         this.lastName = lastName;
     }
 
-    public boolean addCourseByName(String name) {
-        Course courseToAdd = new Course(name);
-        if (courseList.contains(courseToAdd)) return false;
-        return courseList.add(courseToAdd);
+    public Student() {}
+
+    public String getName() {
+        return this.firstName + " " + this.lastName;
     }
 
-    public boolean removeCourseByName(String name) {
-        Course courseToRemove = new Course(name);
-        return courseList.contains(courseToRemove) && courseList.remove(courseToRemove);
+    public void setName(String name) {
+        String[] parts = name.split(" ");
+        this.firstName = parts[0];
+        this.lastName = parts[1];
     }
 
     @Override
@@ -45,7 +41,6 @@ public class Student {
                 "uniqueID='" + id + '\'' +
                 ", firstName='" + firstName + '\'' +
                 ", lastName='" + lastName + '\'' +
-                ", classes=" + courseList +
                 '}';
     }
 
@@ -56,12 +51,11 @@ public class Student {
         Student student = (Student) o;
         return Objects.equals(id, student.id) &&
                 Objects.equals(firstName, student.firstName) &&
-                Objects.equals(lastName, student.lastName) &&
-                Objects.equals(courseList, student.courseList);
+                Objects.equals(lastName, student.lastName);
     }
 
     @Override
     public int hashCode() {
-        return Objects.hash(id, firstName, lastName, courseList);
+        return Objects.hash(id, firstName, lastName);
     }
 }
