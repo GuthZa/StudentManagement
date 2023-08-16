@@ -1,22 +1,21 @@
 package com.guthza.studentmanagement.users;
 
-import com.guthza.studentmanagement.courses.Course;
 import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.Id;
-import lombok.Getter;
-import lombok.Setter;
+import lombok.Data;
 
+import java.util.List;
 import java.util.Objects;
 
-@Getter
-@Setter
+@Data
 @Entity
 public class Student {
 
     private @Id @GeneratedValue Long id;
     private String firstName;
     private String lastName;
+    private List<String> courses;
 
     public Student(String firstName, String lastName) {
         this.firstName = firstName;
